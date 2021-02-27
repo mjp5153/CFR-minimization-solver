@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CfrMinimizationSolverComponent } from './cfr-minimization-solver/cfr-minimization-solver.component';
+import { RegretMatchingSolverComponent } from './regret-matching-solver/regret-matching-solver.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CfrMinimizationSolverComponent
+    RegretMatchingSolverComponent
   ],
   imports: [
     BrowserModule,
