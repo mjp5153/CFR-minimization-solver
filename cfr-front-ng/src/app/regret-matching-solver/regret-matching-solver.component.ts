@@ -9,7 +9,16 @@ import { RegretMatchingSolverService, Game, Players } from '../regret-matching-s
 export class RegretMatchingSolverComponent implements OnInit {
 
   public game1: Game = [[[1, 1], [0, 10]],
-                      [[10, 0], [5, 5]]];
+                        [[10, 0], [5, 5]]];
+
+  public game1positive: Game = [[[3, 3], [4, 0]],
+                                [[0, 4], [2, 2]]];
+
+  public game1positive2: Game = [[[9, 9], [0, 10]],
+                                [[10, 0], [5, 5]]];
+
+  public game1negative: Game = [[[-1, -1], [-10, 0]],
+                                [[0, -10], [-5, -5]]];
 
   public players1: Players = [
     {
@@ -46,7 +55,7 @@ export class RegretMatchingSolverComponent implements OnInit {
   }
 
   public solveGame(): any {
-    this.regretMatchingService.solveGame(this.game1, this.players1);
+    this.regretMatchingService.solveGame(this.game1negative, this.players1);
     this.regretMatchingService.solveGame(this.game2, this.players2);
   }
 

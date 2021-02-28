@@ -30,15 +30,15 @@ export class RegretMatchingSolverService {
    * @param game The game matrix
    * @param players The players, with their moves
    */
-  public solveGame(game: Game, players: Players): any {
+  public solveGame(game: Game, players: Players): void {
 
+    this.makeStrategyPositive(game);
     const iterations = 10000;
     this.initStrategies(players);
     for (let i = 0; i < iterations; i++) {
       this.regretMatching(game, players);
     }
     this.printStrategy(players, iterations);
-    return 0;
   }
 
   private printStrategy(players: Players, iterations: number): void {
@@ -46,6 +46,28 @@ export class RegretMatchingSolverService {
       console.log(player.name + ':');
       for (const strategy of player.strategies) {
         console.log('   ' + strategy.name + ': ' + (strategy.sum / iterations));
+      }
+    }
+  }
+
+  private makeStrategyPositive(game: Game): void {
+    let min = 0;
+    for (const row of game) {
+      for (const cell of row) {
+        if (cell[0] < 0 && cell[0] < min) {
+          min = cell[0];
+        }
+        if (cell[1] < 0 && cell[1] < min) {
+          min = cell[1];
+        }
+      }
+    }
+    if (min < 0) {
+      for (const row of game) {
+        for (const cell of row) {
+          cell[0] = cell[0] - min;
+          cell[1] = cell[1] - min;
+        }
       }
     }
   }
@@ -73,7 +95,12 @@ export class RegretMatchingSolverService {
         regretTotal += strategy.regret > 0 ? strategy.regret : 0;
       }
       for (const strategy of player.strategies) {
-        strategy.percentage = regretTotal === 0 ? (1 / numStrategies) : (strategy.regret / regretTotal);
+        // pick actions in proportion to the amount of positive regret on the actions
+        if (strategy.regret < 0) {
+          strategy.percentage = 0;
+        } else {
+          strategy.percentage = regretTotal === 0 ? (1 / numStrategies) : (strategy.regret / regretTotal);
+        }
 
         // Update Average Strategy tracker
         strategy.sum += strategy.percentage;
@@ -99,13 +126,13 @@ export class RegretMatchingSolverService {
         let strategyEV = 0;
         if (i === 0) {
           // Player 1
-          for (const row of game) {
-            strategyEV += row[j][i] * strategy.percentage;
+          for (const cell of game[j]) {
+            strategyEV += cell[i] * strategy.percentage;
           }
         } else if (i === 1) {
           // Player 2
-          for (const cell of game[j]) {
-            strategyEV += cell[i] * strategy.percentage;
+          for (const row of game) {
+            strategyEV += row[j][i] * strategy.percentage;
           }
         }
         // Update regret for each action
