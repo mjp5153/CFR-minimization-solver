@@ -10,6 +10,18 @@ export type Strategy = {
   percentage?: number;
 };
 
+export type Solution = PlayerSolution[];
+
+export type PlayerSolution = {
+  name: string;
+  strategies: StrategySolution[];
+};
+
+export type StrategySolution = {
+  action: string;
+  percentage: number;
+};
+
 export type Player = {
   name: string;
   strategies: Strategy[];
@@ -30,7 +42,7 @@ export class RegretMatchingSolverService {
    * @param game The game matrix
    * @param players The players, with their moves
    */
-  public solveGame(game: Game, players: Players): void {
+  public solveGame(game: Game, players: Players): Solution {
 
     this.makeStrategyPositive(game);
     const iterations = 10000;
@@ -38,16 +50,27 @@ export class RegretMatchingSolverService {
     for (let i = 0; i < iterations; i++) {
       this.regretMatching(game, players);
     }
-    this.printStrategy(players, iterations);
+    return this.generateSolution(players, iterations);
   }
 
-  private printStrategy(players: Players, iterations: number): void {
+  private generateSolution(players: Players, iterations: number): Solution {
+    const retVal: Solution = [];
     for (const player of players) {
       console.log(player.name + ':');
+      const playerObj = {
+        name: player.name,
+        strategies: [],
+      };
       for (const strategy of player.strategies) {
         console.log('   ' + strategy.name + ': ' + (strategy.sum / iterations));
+        playerObj.strategies.push({
+          action: strategy.name,
+          percentage: (strategy.sum / iterations),
+        });
       }
+      retVal.push(playerObj);
     }
+    return retVal;
   }
 
   private makeStrategyPositive(game: Game): void {
@@ -90,16 +113,17 @@ export class RegretMatchingSolverService {
     for (const player of players) {
       // Set current strategy based on regrets
       let regretTotal = 0;
-      const numStrategies = player.strategies.length;
+      let numPosStrategies = 0;
       for (const strategy of player.strategies) {
         regretTotal += strategy.regret > 0 ? strategy.regret : 0;
+        numPosStrategies += strategy.regret >= 0 ? 1 : 0;
       }
       for (const strategy of player.strategies) {
         // pick actions in proportion to the amount of positive regret on the actions
         if (strategy.regret < 0) {
           strategy.percentage = 0;
         } else {
-          strategy.percentage = regretTotal === 0 ? (1 / numStrategies) : (strategy.regret / regretTotal);
+          strategy.percentage = regretTotal === 0 ? (1 / numPosStrategies) : (strategy.regret / regretTotal);
         }
 
         // Update Average Strategy tracker

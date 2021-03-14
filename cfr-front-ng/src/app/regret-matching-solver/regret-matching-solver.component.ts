@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RegretMatchingSolverService, Game, Players } from '../regret-matching-solver.service';
+import { RegretMatchingSolverService, Game, Players, Solution } from '../regret-matching-solver.service';
 
 @Component({
   selector: 'app-regret-matching-solver',
@@ -8,19 +8,38 @@ import { RegretMatchingSolverService, Game, Players } from '../regret-matching-s
 })
 export class RegretMatchingSolverComponent implements OnInit {
 
-  public game1: Game = [[[1, 1], [0, 10]],
-                        [[10, 0], [5, 5]]];
+  public year;
 
-  public game1positive: Game = [[[3, 3], [4, 0]],
-                                [[0, 4], [2, 2]]];
+  public game: Game = [[[0, 0], [0, 0]],
+                       [[0, 0], [0, 0]]];
 
-  public game1positive2: Game = [[[9, 9], [0, 10]],
-                                [[10, 0], [5, 5]]];
+  public players: Players = [{
+      name: 'Player 1',
+      strategies: [{name: 'Action 1'}, {name: 'Action 2'}]
+    },
+    {
+      name: 'Player 2',
+      strategies: [{name: 'Action 1'}, {name: 'Action 2'}]
+    }
+  ];
 
-  public game1negative: Game = [[[-1, -1], [-10, 0]],
-                                [[0, -10], [-5, -5]]];
+  public defaultGame: Game = [[[0, 0], [0, 0]],
+    [[0, 0], [0, 0]]];
 
-  public players1: Players = [
+  public defaultPlayers: Players = [{
+    name: 'Player 1',
+    strategies: [{name: 'Action 1'}, {name: 'Action 2'}]
+  },
+    {
+      name: 'Player 2',
+      strategies: [{name: 'Action 1'}, {name: 'Action 2'}]
+    }
+  ];
+
+  public prisoners: Game = [[[-1, -1], [-10, 0]],
+                            [[0, -10], [-5, -5]]];
+
+  public prisonersPlayers: Players = [
     {
       name: 'Player 1',
       strategies: [{name: 'Say Nothing'}, {name: 'Snitch'}]
@@ -31,11 +50,11 @@ export class RegretMatchingSolverComponent implements OnInit {
     }
   ];
 
-  public game2: Game = [[[0, 0], [0, 1], [1, 0]],
-                        [[1, 0], [0, 0], [0, 1]],
-                        [[0, 1], [1, 0], [0, 0]]];
+  public rockPaperScissors: Game = [[[0, 0], [0, 1], [1, 0]],
+                                    [[1, 0], [0, 0], [0, 1]],
+                                    [[0, 1], [1, 0], [0, 0]]];
 
-  public players2: Players = [
+  public rpsPlayers: Players = [
     {
       name: 'Player 1',
       strategies: [{name: 'Rock'}, {name: 'Paper'}, {name: 'Scissors'}]
@@ -45,18 +64,59 @@ export class RegretMatchingSolverComponent implements OnInit {
       strategies: [{name: 'Rock'}, {name: 'Paper'}, {name: 'Scissors'}]
     }
   ];
+
+  public solution: Solution = null;
 
   constructor(
     public readonly regretMatchingService: RegretMatchingSolverService
   ) { }
 
   ngOnInit(): void {
-    this.solveGame();
+    this.year = new Date().getFullYear();
   }
 
   public solveGame(): any {
-    this.regretMatchingService.solveGame(this.game1negative, this.players1);
-    this.regretMatchingService.solveGame(this.game2, this.players2);
+    const game = JSON.parse(JSON.stringify(this.game));
+    const players = JSON.parse(JSON.stringify(this.players));
+    this.solution = this.regretMatchingService.solveGame(game, players);
+  }
+
+  public addPlayer1Action(): void {
+    const len = this.players[0].strategies.length + 1;
+    this.players[0].strategies.push({name: `Action ${len}`});
+    const newRow = [];
+    for (const i of this.game[0]) {
+      newRow.push([0, 0]);
+    }
+    this.game.push(newRow);
+    delete this.solution;
+  }
+
+  public addPlayer2Action(): void {
+    const len = this.players[1].strategies.length + 1;
+    this.players[1].strategies.push({name: `Action ${len}`});
+    for (const row of this.game) {
+      row.push([0, 0]);
+    }
+    delete this.solution;
+  }
+
+  public loadPrisoner(): void {
+    this.game = JSON.parse(JSON.stringify(this.prisoners));
+    this.players = JSON.parse(JSON.stringify(this.prisonersPlayers));
+    delete this.solution;
+  }
+
+  public loadRPS(): void {
+    this.game = JSON.parse(JSON.stringify(this.rockPaperScissors));
+    this.players = JSON.parse(JSON.stringify(this.rpsPlayers));
+    delete this.solution;
+  }
+
+  public resetGame(): void {
+    this.game = JSON.parse(JSON.stringify(this.defaultGame));
+    this.players = JSON.parse(JSON.stringify(this.defaultPlayers));
+    delete this.solution;
   }
 
 }

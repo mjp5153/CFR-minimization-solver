@@ -1,1 +1,65 @@
-<p>regret-matching-solver works!</p>
+
+<div class="root">
+  <!-- TODO: Link back to home -->
+  <h1>Regret Minimization Solver</h1>
+  <p>Solve arbitrary 2-person simultaneous single-turn game theory games!</p>
+
+  <!-- TODO: About popup that explains algorithm -->
+
+  <div class="game">
+    <div class="top-name">{{players[1].name}}</div>
+    <div class="game2">
+      <div class="side-name">{{players[0].name}}</div>
+      <div class="game3">
+        <table role="presentation">
+          <tr class="row">
+            <td class="action"></td>
+            <td class="action" *ngFor="let strategy of players[1].strategies">{{strategy.name}}</td>
+            <td class="action">
+              <button mat-stroked-button color="primary" (click)="addPlayer2Action()">Add Player 2 action</button>
+            </td>
+          </tr>
+          <tr class="row" *ngFor="let row of this.game; let i = index">
+            <td class="action">{{players[0].strategies[i].name}}</td>
+            <td class="cell" *ngFor="let cell of row; let j = index">{{cell}}</td>
+            <td class="cell"><!-- blank for alignment --></td>
+          </tr>
+          <tr class="row">
+            <td class="action">
+              <button mat-stroked-button color="primary" (click)="addPlayer1Action()">Add Player 1 action</button>
+            </td>
+            <td class="cell" *ngFor="let cell of game[0]; let j = index"><!-- blank for alignment --></td>
+            <td class="cell"><!-- blank for alignment --></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="buttons">
+    <button mat-stroked-button color="warn" (click)="resetGame()">Clear Game Board</button>
+    <button mat-stroked-button color="primary" (click)="solveGame()">Solve Game</button>
+  </div>
+
+
+  <div class="solution" *ngIf="solution">
+    <p>Solution:</p>
+    <div *ngFor="let player of solution">
+      {{player.name}}:
+      <div *ngFor="let strategy of player.strategies">
+        &nbsp;&nbsp;&nbsp;{{strategy.action}}: {{strategy.percentage}}
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <p>Play common 2-person simultaneous single-turn game theory games.</p>
+  <div class="buttons">
+    <button mat-stroked-button color="primary" (click)="loadPrisoner()">The Prisoner's Dilemma</button>
+    <button mat-stroked-button color="primary" (click)="loadRPS()">Rock Paper Scissors</button>
+  </div>
+
+
+  <div class="info-text">Copyright 2021 - {{year}} Mike Peters.  Source code available under Apache License, Version 2.0 at <a target="_blank" href="https://github.com/mjp5153/CFR-minimization-solver">github</a>.</div>
+</div>
