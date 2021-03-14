@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RegretMatchingSolverService, Game, Players, Solution } from '../regret-matching-solver.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateUtilityDialogComponent } from '../update-utility-dialog/update-utility-dialog.component';
 
 @Component({
   selector: 'app-regret-matching-solver',
@@ -68,7 +70,8 @@ export class RegretMatchingSolverComponent implements OnInit {
   public solution: Solution = null;
 
   constructor(
-    public readonly regretMatchingService: RegretMatchingSolverService
+    private readonly dialog: MatDialog,
+    public readonly regretMatchingService: RegretMatchingSolverService,
   ) { }
 
   ngOnInit(): void {
@@ -117,6 +120,21 @@ export class RegretMatchingSolverComponent implements OnInit {
     this.game = JSON.parse(JSON.stringify(this.defaultGame));
     this.players = JSON.parse(JSON.stringify(this.defaultPlayers));
     delete this.solution;
+  }
+
+  public async updateCellValue(i: number, j: number): Promise<void> {
+    console.log(i + ',' + j);
+    const dialogRef = this.dialog.open(UpdateUtilityDialogComponent, {
+      data: {
+        player1Utility: this.game[i][j][0],
+        player2Utility: this.game[i][j][1],
+      },
+    });
+
+    const result = await dialogRef.afterClosed().toPromise();
+    if (result) {
+      this.game[i][j] = [result.player1Utility, result.player2Utility];
+    }
   }
 
 }

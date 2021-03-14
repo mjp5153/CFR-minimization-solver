@@ -1,17 +1,19 @@
 <h1 mat-dialog-title>Update Utility Values</h1>
-<div class="content" mat-dialog-content>
-  <mat-form-field>
-    <mat-label>Player 1 Utility</mat-label>
-    <input matInput autocomplete="off" type="number" [(ngModel)]="data.player1Utility" cdkFocusInitial>
-  </mat-form-field>
-</div>
-<div class="content" mat-dialog-content>
-  <mat-form-field>
-    <mat-label>Player 2 Utility</mat-label>
-    <input matInput autocomplete="off" type="number" [(ngModel)]="data.player2Utility" cdkFocusInitial>
-  </mat-form-field>
-</div>
+<form #form="ngForm">
+  <div class="content" mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Player 1 Utility</mat-label>
+      <input matInput autocomplete="off" type="number" name="utility1" [(ngModel)]="data.player1Utility" cdkFocusInitial required>
+    </mat-form-field>
+  </div>
+  <div class="content" mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Player 2 Utility</mat-label>
+      <input matInput autocomplete="off" type="number" name="utility2" [(ngModel)]="data.player2Utility" cdkFocusInitial required>
+    </mat-form-field>
+  </div>
+</form>
 <div class="actions" mat-dialog-actions>
   <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button (click)="onFinish()">Save</button>
+  <button mat-button [disabled]="!form.valid" (click)="onFinish()">Save</button>
 </div>

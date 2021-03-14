@@ -150,13 +150,14 @@ export class RegretMatchingSolverService {
         let strategyEV = 0;
         if (i === 0) {
           // Player 1
-          for (const cell of game[j]) {
-            strategyEV += cell[i] * strategy.percentage;
+          for (let k = 0; k < game[j].length; k++) {
+            const cell = game[j][k];
+            strategyEV += cell[i] * players[1].strategies[k].percentage;
           }
         } else if (i === 1) {
           // Player 2
-          for (const row of game) {
-            strategyEV += row[j][i] * strategy.percentage;
+          for (let k = 0; k < game.length; k++) {
+            strategyEV += game[k][j][i] * players[0].strategies[k].percentage;
           }
         }
         // Update regret for each action

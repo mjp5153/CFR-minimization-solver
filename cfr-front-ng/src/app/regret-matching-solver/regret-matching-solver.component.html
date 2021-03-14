@@ -21,7 +21,9 @@
           </tr>
           <tr class="row" *ngFor="let row of this.game; let i = index">
             <td class="action">{{players[0].strategies[i].name}}</td>
-            <td class="cell" *ngFor="let cell of row; let j = index">{{cell}}</td>
+            <td class="cell" *ngFor="let cell of row; let j = index">
+              <button mat-button (click)="updateCellValue(i, j)">{{cell}}</button>
+            </td>
             <td class="cell"><!-- blank for alignment --></td>
           </tr>
           <tr class="row">
