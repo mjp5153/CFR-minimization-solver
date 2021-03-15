@@ -1,7 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-export interface DialogData {
+export interface UtilityDialogData {
+  player1Name: string,
+  player2Name: string,
   player1Utility: number;
   player2Utility: number;
 }
@@ -15,7 +17,7 @@ export class UpdateUtilityDialogComponent implements OnInit {
 
   constructor(
     public readonly dialogRef: MatDialogRef<UpdateUtilityDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public readonly data: DialogData
+    @Inject(MAT_DIALOG_DATA) public readonly data: UtilityDialogData
   ) { }
 
   ngOnInit(): void {

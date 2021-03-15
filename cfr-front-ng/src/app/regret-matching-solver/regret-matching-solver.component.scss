@@ -19,10 +19,13 @@
     .game {
       min-width: 50%;
       max-width: 100%;
+      border-style: solid;
+      border-color: lightgray;
       display: flex;
       flex-direction: column;
       align-items: center;
       margin-top: 1em;
+      padding: 1em;
 
       .top-name {
         width: 100%;

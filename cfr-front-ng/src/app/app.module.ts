@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { UpdateNameDialogComponent } from './update-name-dialog/update-name-dialog.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FormsModule } from '@angular/forms';
     CfrSolverComponent,
     NotFoundComponent,
     MainComponent,
-    UpdateUtilityDialogComponent
+    UpdateUtilityDialogComponent,
+    UpdateNameDialogComponent
   ],
   imports: [
     BrowserModule,

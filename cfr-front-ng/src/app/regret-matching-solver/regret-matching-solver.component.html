@@ -7,20 +7,28 @@
   <!-- TODO: About popup that explains algorithm -->
 
   <div class="game">
-    <div class="top-name">{{players[1].name}}</div>
+    <div class="top-name">
+      <button mat-button (click)="updatePlayerName(1)">{{players[1].name}}</button>
+    </div>
     <div class="game2">
-      <div class="side-name">{{players[0].name}}</div>
+      <div class="side-name">
+        <button mat-button (click)="updatePlayerName(0)">{{players[0].name}}</button>
+      </div>
       <div class="game3">
         <table role="presentation">
           <tr class="row">
             <td class="action"></td>
-            <td class="action" *ngFor="let strategy of players[1].strategies">{{strategy.name}}</td>
+            <td class="action" *ngFor="let strategy of players[1].strategies; let strategyIndex = index">
+              <button mat-button (click)="updateActionName(1, strategyIndex)">{{strategy.name}}</button>
+            </td>
             <td class="action">
-              <button mat-stroked-button color="primary" (click)="addPlayer2Action()">Add Player 2 action</button>
+              <button mat-stroked-button color="primary" (click)="addPlayer2Action()">Add {{players[1].name}} action</button>
             </td>
           </tr>
           <tr class="row" *ngFor="let row of this.game; let i = index">
-            <td class="action">{{players[0].strategies[i].name}}</td>
+            <td class="action">
+              <button mat-button (click)="updateActionName(0, i)">{{players[0].strategies[i].name}}</button>
+            </td>
             <td class="cell" *ngFor="let cell of row; let j = index">
               <button mat-button (click)="updateCellValue(i, j)">{{cell}}</button>
             </td>
@@ -28,7 +36,7 @@
           </tr>
           <tr class="row">
             <td class="action">
-              <button mat-stroked-button color="primary" (click)="addPlayer1Action()">Add Player 1 action</button>
+              <button mat-stroked-button color="primary" (click)="addPlayer1Action()">Add {{players[0].name}} action</button>
             </td>
             <td class="cell" *ngFor="let cell of game[0]; let j = index"><!-- blank for alignment --></td>
             <td class="cell"><!-- blank for alignment --></td>
@@ -36,10 +44,10 @@
         </table>
       </div>
     </div>
-  </div>
-  <div class="buttons">
-    <button mat-stroked-button color="warn" (click)="resetGame()">Clear Game Board</button>
-    <button mat-stroked-button color="primary" (click)="solveGame()">Solve Game</button>
+    <div class="buttons">
+      <button mat-stroked-button color="warn" (click)="resetGame()">Clear Game Board</button>
+      <button mat-stroked-button color="primary" (click)="solveGame()">Solve Game</button>
+    </div>
   </div>
 
 

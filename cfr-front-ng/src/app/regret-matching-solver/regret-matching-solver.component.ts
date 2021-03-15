@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RegretMatchingSolverService, Game, Players, Solution } from '../regret-matching-solver.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateUtilityDialogComponent } from '../update-utility-dialog/update-utility-dialog.component';
+import { UpdateNameDialogComponent } from '../update-name-dialog/update-name-dialog.component';
 
 @Component({
   selector: 'app-regret-matching-solver',
@@ -43,11 +44,11 @@ export class RegretMatchingSolverComponent implements OnInit {
 
   public prisonersPlayers: Players = [
     {
-      name: 'Player 1',
+      name: 'Prisoner 1',
       strategies: [{name: 'Say Nothing'}, {name: 'Snitch'}]
     },
     {
-      name: 'Player 2',
+      name: 'Prisoner 2',
       strategies: [{name: 'Say Nothing'}, {name: 'Snitch'}]
     }
   ];
@@ -126,6 +127,8 @@ export class RegretMatchingSolverComponent implements OnInit {
     console.log(i + ',' + j);
     const dialogRef = this.dialog.open(UpdateUtilityDialogComponent, {
       data: {
+        player1Name: this.players[0].name,
+        player2Name: this.players[1].name,
         player1Utility: this.game[i][j][0],
         player2Utility: this.game[i][j][1],
       },
@@ -134,6 +137,36 @@ export class RegretMatchingSolverComponent implements OnInit {
     const result = await dialogRef.afterClosed().toPromise();
     if (result) {
       this.game[i][j] = [result.player1Utility, result.player2Utility];
+    }
+  }
+
+  public async updatePlayerName(i: number): Promise<void> {
+    console.log(i);
+    const dialogRef = this.dialog.open(UpdateNameDialogComponent, {
+      data: {
+        type: 'Player',
+        name: this.players[i].name,
+      },
+    });
+
+    const result = await dialogRef.afterClosed().toPromise();
+    if (result) {
+      this.players[i].name = result.name;
+    }
+  }
+
+  public async updateActionName(playerIndex: number, strategyIndex: number): Promise<void> {
+    console.log(playerIndex + ', ' + strategyIndex);
+    const dialogRef = this.dialog.open(UpdateNameDialogComponent, {
+      data: {
+        type: 'Action',
+        name: this.players[playerIndex].strategies[strategyIndex].name,
+      },
+    });
+
+    const result = await dialogRef.afterClosed().toPromise();
+    if (result) {
+      this.players[playerIndex].strategies[strategyIndex].name = result.name;
     }
   }
 
