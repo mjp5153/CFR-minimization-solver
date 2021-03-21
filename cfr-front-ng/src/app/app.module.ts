@@ -15,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { UpdateNameDialogComponent } from './update-name-dialog/update-name-dialog.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { UpdateNameDialogComponent } from './update-name-dialog/update-name-dial
     MatFormFieldModule,
     MatDialogModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

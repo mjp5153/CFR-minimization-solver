@@ -1,1 +1,14 @@
-<p>cfr-solver works!</p>
+<div class="root">
+  <h2 class="homelink" routerLink="/">
+    <mat-icon aria-hidden="false" aria-label="Home" [inline]="true">home</mat-icon>
+    Game Theory Solver
+  </h2>
+  <h1>Counterfactual Regret Minimization Solver</h1>
+  <p>Solve arbitrary 2-person sequential multiple-turn game theory games!</p>
+  <p><em>Coming soon...</em></p>
+  <p>Play pre-defined 2-person simultaneous single-turn game theory games.</p>
+  <div class="buttons">
+    <button mat-stroked-button color="primary" (click)="loadPrisoner()">The Prisoner's Dilemma</button>
+    <button mat-stroked-button color="primary" (click)="loadRPS()">Rock Paper Scissors</button>
+  </div>
+</div>
