@@ -4,11 +4,20 @@
     Game Theory Solver
   </h2>
   <h1>Counterfactual Regret Minimization Solver</h1>
-  <p>Solve arbitrary 2-person sequential multiple-turn game theory games!</p>
-  <p><em>Coming soon...</em></p>
-  <p>Play pre-defined 2-person simultaneous single-turn game theory games.</p>
+  <p>Solve arbitrary 2-person zero-sum sequential game theory games!</p>
+
+
+  <p><em>work in progress...</em></p>
+
+  <div class="game" *ngIf="game">
+    <h2 class="game-name">{{game.name}}</h2>
+    <div class="game-description"><b>Description: </b>{{game.description}}</div>
+  </div>
+
+
+  <p>Play pre-defined 2-person zero-sum sequential game theory games.</p>
   <div class="buttons">
-    <button mat-stroked-button color="primary" (click)="loadPrisoner()">The Prisoner's Dilemma</button>
-    <button mat-stroked-button color="primary" (click)="loadRPS()">Rock Paper Scissors</button>
+    <button mat-stroked-button color="primary" (click)="loadEvenOrOdd()">Even or Odd</button>
+    <button mat-stroked-button color="primary" (click)="loadKuhn()">Kuhn Poker</button>
   </div>
 </div>

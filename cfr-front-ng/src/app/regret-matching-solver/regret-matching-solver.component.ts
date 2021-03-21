@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RegretMatchingSolverService, Game, Players, Solution } from '../regret-matching-solver.service';
+import { RegretMatchingSolverService, Game, Players, Solution } from '../services/regret-matching-solver.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateUtilityDialogComponent } from '../update-utility-dialog/update-utility-dialog.component';
 import { UpdateNameDialogComponent } from '../update-name-dialog/update-name-dialog.component';

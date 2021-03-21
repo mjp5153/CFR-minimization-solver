@@ -1,3 +1,4 @@
 [submodule "cfr-front-ng/src/assets/games"]
 	path = cfr-front-ng/src/assets/games
 	url = https://github.com/mjp5153/2-player-zero-sum-sequential-game-spec.git
+	branch = main
