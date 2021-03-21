@@ -13,7 +13,7 @@
     <h2 class="game-name">{{game.name}}</h2>
     <div class="game-description"><b>Description: </b>{{game.description}}</div>
   </div>
-
+  <div class="error" *ngIf="error">Error loading game: {{error}}</div>
 
   <p>Play pre-defined 2-person zero-sum sequential game theory games.</p>
   <div class="buttons">

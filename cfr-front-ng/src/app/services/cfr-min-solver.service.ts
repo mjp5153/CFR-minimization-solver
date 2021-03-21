@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { JSONSchemaService } from './json-schema.service';
 import gameSchema from '../../assets/games/json-schemas/2-player-zero-sum-sequential-game-spec.schema.json';
+import { throwError } from 'rxjs';
 
 
 export interface GameStateActions {
@@ -54,7 +55,7 @@ export class CfrMinSolverService {
       return game as ZeroSumSequentialGameTheorySpecification;
     } else {
       console.log(result.errorsText);
-      return null;
+      throwError( result.errorsText);
     }
   }
 

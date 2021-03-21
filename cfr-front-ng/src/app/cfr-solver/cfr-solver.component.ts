@@ -15,6 +15,7 @@ import {
 export class CfrSolverComponent implements OnInit {
 
   public game: ZeroSumSequentialGameTheorySpecification;
+  public error: string;
 
   constructor(
     public readonly cfrService: CfrMinSolverService
@@ -24,8 +25,14 @@ export class CfrSolverComponent implements OnInit {
   }
 
   public setGame(game: object): void {
-    game = this.cfrService.validateGame(game);
-    this.game = JSON.parse(JSON.stringify(game));
+    try {
+      game = this.cfrService.validateGame(game);
+      this.game = JSON.parse(JSON.stringify(game));
+      delete this.error;
+    } catch (e) {
+      delete this.game;
+      this.error = e;
+    }
   }
 
   public loadKuhn(): void {
@@ -35,6 +42,8 @@ export class CfrSolverComponent implements OnInit {
 
   public loadEvenOrOdd(): void {
     console.log(JSON.stringify(evenOrOdd, null, 2));
+    // To create validation error, uncomment next line
+    // evenOrOdd.states[0].player = 3;
     this.setGame(evenOrOdd);
   }
 

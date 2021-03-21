@@ -31,12 +31,15 @@ export class JSONSchemaService {
     const ajv = new Ajv({ allErrors: true });
     const validate = ajv.compile(schema);
     const valid = validate(data);
+    let errorText = '';
     if (!valid) {
       console.log(validate.errors);
+      const error = validate.errors[validate.errors.length - 1];
+      errorText = error.dataPath + ': ' + error.message;
     } else {
       console.log('Valid!');
     }
 
-    return { isValid: valid, errorsText: JSON.stringify(validate.errors) };
+    return { isValid: valid, errorsText: errorText };
   }
 }
