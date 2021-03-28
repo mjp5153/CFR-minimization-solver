@@ -37,6 +37,7 @@ export interface ZeroSumSequentialGameTheorySpecification {
   description?: string;
   start?: string;
   states?: States;
+  error?: string;
 }
 
 @Injectable({
@@ -55,7 +56,9 @@ export class CfrMinSolverService {
       return game as ZeroSumSequentialGameTheorySpecification;
     } else {
       console.log(result.errorsText);
-      throwError( result.errorsText);
+      return {
+        error: result.errorsText
+      };
     }
   }
 

@@ -28,7 +28,12 @@ export class CfrSolverComponent implements OnInit {
     try {
       game = this.cfrService.validateGame(game);
       this.game = JSON.parse(JSON.stringify(game));
-      delete this.error;
+      if (this.game.error) {
+        this.error = this.game.error;
+        delete this.game;
+      } else {
+        delete this.error;
+      }
     } catch (e) {
       delete this.game;
       this.error = e;

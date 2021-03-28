@@ -65,7 +65,7 @@ export class RegretMatchingSolverService {
         console.log('   ' + strategy.name + ': ' + (strategy.sum / iterations));
         playerObj.strategies.push({
           action: strategy.name,
-          percentage: (strategy.sum / iterations),
+          percentage: ((strategy.sum / iterations) * 100).toFixed(1) + '%',
         });
       }
       retVal.push(playerObj);

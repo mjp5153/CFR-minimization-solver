@@ -35,7 +35,7 @@ export class JSONSchemaService {
     if (!valid) {
       console.log(validate.errors);
       const error = validate.errors[validate.errors.length - 1];
-      errorText = error.dataPath + ': ' + error.message;
+      errorText = error.instancePath + ': ' + error.message;
     } else {
       console.log('Valid!');
     }
