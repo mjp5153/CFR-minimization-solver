@@ -15,6 +15,7 @@ import {
 export class CfrSolverComponent implements OnInit {
 
   public game: ZeroSumSequentialGameTheorySpecification;
+  public result: string;
   public error: string;
 
   constructor(
@@ -33,6 +34,8 @@ export class CfrSolverComponent implements OnInit {
         delete this.game;
       } else {
         delete this.error;
+        // TODO: Play that sucka
+        this.result = this.cfrService.solveGame(game);
       }
     } catch (e) {
       delete this.game;
@@ -41,12 +44,10 @@ export class CfrSolverComponent implements OnInit {
   }
 
   public loadKuhn(): void {
-    console.log(JSON.stringify(kuhn, null, 2));
     this.setGame(kuhn);
   }
 
   public loadEvenOrOdd(): void {
-    console.log(JSON.stringify(evenOrOdd, null, 2));
     // To create validation error, uncomment next line
     // evenOrOdd.states[0].player = 3;
     this.setGame(evenOrOdd);
