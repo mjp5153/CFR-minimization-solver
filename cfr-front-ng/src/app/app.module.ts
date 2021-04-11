@@ -13,9 +13,11 @@ import { UpdateUtilityDialogComponent } from './update-utility-dialog/update-uti
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { UpdateNameDialogComponent } from './update-name-dialog/update-name-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
+import { UploadGameDialogComponent } from './upload-game-dialog/upload-game-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { MatIconModule } from '@angular/material/icon';
     NotFoundComponent,
     MainComponent,
     UpdateUtilityDialogComponent,
-    UpdateNameDialogComponent
+    UpdateNameDialogComponent,
+    UploadGameDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +38,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatDialogModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     FormsModule,
     MatIconModule
   ],

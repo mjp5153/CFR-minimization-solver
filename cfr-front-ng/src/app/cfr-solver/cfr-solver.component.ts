@@ -5,6 +5,8 @@ import {
   CfrMinSolverService,
   ZeroSumSequentialGameTheorySpecification
 } from '../services/cfr-min-solver.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UploadGameDialogComponent } from '../upload-game-dialog/upload-game-dialog.component';
 
 
 @Component({
@@ -17,16 +19,19 @@ export class CfrSolverComponent implements OnInit {
   public game: ZeroSumSequentialGameTheorySpecification;
   public result: string;
   public error: string;
+  public loading = false;
 
   constructor(
-    public readonly cfrService: CfrMinSolverService
+    public readonly cfrService: CfrMinSolverService,
+    private readonly dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
   }
 
-  public setGame(game: object): void {
+  public async setGame(game: object): Promise<void> {
     try {
+      this.loading = true;
       game = this.cfrService.validateGame(game);
       this.game = JSON.parse(JSON.stringify(game));
       if (this.game.error) {
@@ -34,12 +39,14 @@ export class CfrSolverComponent implements OnInit {
         delete this.game;
       } else {
         delete this.error;
-        // TODO: Play that sucka
-        this.result = this.cfrService.solveGame(game);
+
+        this.result = await this.cfrService.solveGame(game);
       }
     } catch (e) {
       delete this.game;
       this.error = e;
+    } finally {
+      this.loading = false;
     }
   }
 
@@ -51,6 +58,22 @@ export class CfrSolverComponent implements OnInit {
     // To create validation error, uncomment next line
     // evenOrOdd.states[0].player = 3;
     this.setGame(evenOrOdd);
+  }
+
+  public resetGame(): void {
+    this.loading = false;
+    delete this.error;
+    delete this.game;
+  }
+
+  public async uploadGame(): Promise<void> {
+    const dialogRef = this.dialog.open(UploadGameDialogComponent);
+
+    const result = await dialogRef.afterClosed().toPromise();
+    if (result) {
+      const jsonResult = JSON.parse(result);
+      this.setGame(jsonResult);
+    }
   }
 
 }

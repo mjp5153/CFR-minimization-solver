@@ -71,42 +71,18 @@ export class CfrMinSolverService {
     public readonly jsonSchema: JSONSchemaService
   ) {}
 
-  public validateGame(game: object): ZeroSumSequentialGameTheorySpecification {
-    const result = this.jsonSchema.validate(gameSchema, game);
-    if (result.isValid) {
-      console.log('valid');
-      return game as ZeroSumSequentialGameTheorySpecification;
-    } else {
-      console.log(result.errorsText);
-      return {
-        error: result.errorsText
-      };
-    }
-  }
-
-  private getRandomInt(max: number): number {
-    return Math.floor(Math.random() * max);
-  }
-
-  public solveGame(game: ZeroSumSequentialGameTheorySpecification): string {
-
-    const solution = this.runCfrMin(game);
-    console.log(solution);
-    return solution;
-  }
-
-  private generateSolution(strategies: GameStrategy, iterations: number): string {
+  private static generateSolution(strategies: GameStrategy, iterations: number): string {
     // TODO: This
     return '';
   }
 
-  private getState(game: ZeroSumSequentialGameTheorySpecification, stateName: string) {
+  private static getState(game: ZeroSumSequentialGameTheorySpecification, stateName: string) {
     return game.states.find(state => {
       return state.name === stateName;
     });
   }
 
-  private initStrategies(game: ZeroSumSequentialGameTheorySpecification): GameStrategy {
+  private static initStrategies(game: ZeroSumSequentialGameTheorySpecification): GameStrategy {
     const strategies: GameStrategy = {
       1: {},
       2: {},
@@ -164,8 +140,8 @@ export class CfrMinSolverService {
     return strategies;
   }
 
-  private runCfrMin(game: ZeroSumSequentialGameTheorySpecification): string {
-    const iterations = 10000;
+  private static runCfrMin(game: ZeroSumSequentialGameTheorySpecification): string {
+    const iterations = 20000;
     const strategies = this.initStrategies(game);
     let ev = 0;
     for (let i = 0; i < iterations; i++) {
@@ -175,11 +151,41 @@ export class CfrMinSolverService {
     console.log(JSON.stringify(strategies, null, 2));
     console.log((ev / iterations));
 
-    return this.generateSolution(strategies, iterations);
+    return CfrMinSolverService.generateSolution(strategies, iterations);
+  }
+
+  // update strategies proportional to the positive regret
+  private static updateStrategies(strategies: GameStrategy): void {
+    // set probability for each strategy
+    for (const player of [1, 2]) {
+      for (const strategy of Object.values<PlayerStrategy>(strategies[player])) {
+
+        let regretTotal = 0;
+        let numPosStrategies = 0;
+        for (const action of Object.values<ActionStrategy>(strategy)) {
+          regretTotal += action.regret > 0 ? action.regret : 0;
+          numPosStrategies += action.regret >= 0 ? 1 : 0;
+        }
+        for (const action of Object.values<ActionStrategy>(strategy)) {
+          // Update Average Strategy tracker
+          action.sum += action.prob * action.reachProb;
+
+          // pick actions in proportion to the amount of positive regret on the actions
+          if (action.regret < 0) {
+            action.prob = 0;
+          } else {
+            action.prob = regretTotal === 0 ? (1 / numPosStrategies) : (action.regret / regretTotal);
+          }
+          action.reachProbSum += action.reachProb;
+          action.reachProb = 0;
+
+        }
+      }
+    }
   }
 
   // current probs is player 1 reach prob, player 2 reach prob, chance reach prob
-  private cfrMin(state: GameState, game: ZeroSumSequentialGameTheorySpecification, strategies: GameStrategy, currentProbs: [number, number, number]): number {
+  private static cfrMin(state: GameState, game: ZeroSumSequentialGameTheorySpecification, strategies: GameStrategy, currentProbs: [number, number, number]): number {
     // if terminal state
     if ('result' in state) {
       return state.result;
@@ -236,34 +242,33 @@ export class CfrMinSolverService {
     }
   }
 
-  // update strategies proportional to the positive regret
-  private updateStrategies(strategies: GameStrategy): void {
-    // set probability for each strategy
-    for (const player of [1, 2]) {
-      for (const strategy of Object.values<PlayerStrategy>(strategies[player])) {
-
-        let regretTotal = 0;
-        let numPosStrategies = 0;
-        for (const action of Object.values<ActionStrategy>(strategy)) {
-          regretTotal += action.regret > 0 ? action.regret : 0;
-          numPosStrategies += action.regret >= 0 ? 1 : 0;
-        }
-        for (const action of Object.values<ActionStrategy>(strategy)) {
-          // Update Average Strategy tracker
-          action.sum += action.prob * action.reachProb;
-
-          // pick actions in proportion to the amount of positive regret on the actions
-          if (action.regret < 0) {
-            action.prob = 0;
-          } else {
-            action.prob = regretTotal === 0 ? (1 / numPosStrategies) : (action.regret / regretTotal);
-          }
-          action.reachProbSum += action.reachProb;
-          action.reachProb = 0;
-
-        }
-      }
+  public validateGame(game: object): ZeroSumSequentialGameTheorySpecification {
+    const result = this.jsonSchema.validate(gameSchema, game);
+    if (result.isValid) {
+      console.log('valid');
+      return game as ZeroSumSequentialGameTheorySpecification;
+    } else {
+      console.log(result.errorsText);
+      return {
+        error: result.errorsText
+      };
     }
+  }
+
+  private getRandomInt(max: number): number {
+    return Math.floor(Math.random() * max);
+  }
+
+  public async solveGame(game: ZeroSumSequentialGameTheorySpecification): Promise<string> {
+
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const solution = CfrMinSolverService.runCfrMin(game);
+        console.log(solution);
+        resolve(solution);
+      }, 0);
+    });
+
   }
 
 

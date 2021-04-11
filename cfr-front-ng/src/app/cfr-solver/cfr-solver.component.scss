@@ -25,6 +25,7 @@
 
     h1 {
       font-size: 4em;
+      line-height: 1.4em;
       margin-top: 2em;
     }
 
@@ -48,54 +49,23 @@
       margin-top: 1em;
       padding: 1em;
 
-      .top-name {
-        width: 100%;
-        font-size: 1.5em;
-        text-align: center;
-        margin: auto;
+      .game-description {
+        max-width: 50em;
+        margin: 3em;
       }
 
-      .game2 {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+      .game-solution {
+        max-width: 50em;
+        margin: 3em;
+      }
 
-        .side-name {
-          width: auto;
-          flex: 0 1 auto;
-          font-size: 1.5em;
-          text-align: center;
-          margin: auto;
-        }
+      .solver-description {
+        max-width: 50em;
+        margin: 3em;
+      }
 
-        .game3 {
-          height: 100%;
-          flex: 1 1 auto;
-          display: flex;
-          flex-direction: column;
-
-          .row {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-
-            .action {
-              font-size: 1.5em;
-              text-align: center;
-              margin: 1em;
-              min-width: 4em;
-              width: 100%;
-            }
-
-            .cell {
-              font-size: 1.5em;
-              text-align: center;
-              margin: 1em;
-              width: 100%;
-            }
-          }
-        }
+      mat-spinner {
+        margin: 3em;
       }
     }
 

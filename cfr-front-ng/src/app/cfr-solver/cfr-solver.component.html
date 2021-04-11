@@ -6,12 +6,23 @@
   <h1>Counterfactual Regret Minimization Solver</h1>
   <p>Solve arbitrary 2-person zero-sum sequential game theory games!</p>
 
-
-  <p><em>work in progress...</em></p>
-
-  <div class="game" *ngIf="game">
-    <h2 class="game-name">{{game.name}}</h2>
-    <div class="game-description"><b>Description: </b>{{game.description}}</div>
+  <div class="game">
+    <div class="solver-description" *ngIf="!game">
+      To run the CFR Solver, either choose a predefined game from the buttons below,
+      or upload a 2-player zero-sum sequential game in the format specified by this JSON Schema:
+      <a href="https://github.com/mjp5153/2-player-zero-sum-sequential-game-spec" target="_blank">
+        2-player zero-sum sequential game specification JSON-schema
+      </a>
+    </div>
+    <ng-container *ngIf="game">
+      <h2 class="game-name">{{game.name}}</h2>
+      <div class="game-description"><b>Description: </b>{{game.description}}</div>
+      <div *ngIf="loading"><mat-spinner mode="indeterminate" [diameter]="40"></mat-spinner></div>
+    </ng-container>
+    <div class="buttons">
+      <button *ngIf="game" mat-stroked-button color="warn" (click)="resetGame()">Clear Game Board</button>
+      <button mat-stroked-button color="primary" (click)="uploadGame()">Upload Game</button>
+    </div>
   </div>
   <div class="error" *ngIf="error">Error loading game: {{error}}</div>
 
