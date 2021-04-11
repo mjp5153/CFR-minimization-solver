@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { JSONSchemaService } from './json-schema.service';
 import gameSchema from '../../assets/games/json-schemas/2-player-zero-sum-sequential-game-spec.schema.json';
 
-
 export interface GameStateActions {
   [key: string]: string;
 }
@@ -47,6 +46,7 @@ export interface ActionStrategy {
   sum: number;
   reachProb: number;
   reachProbSum: number;
+  solution: string;
 }
 
 export interface PlayerStrategy {
@@ -62,6 +62,11 @@ export interface GameStrategy {
   2: PlayerStrategies;
 }
 
+export interface Solution {
+  ev: number;
+  strategy: GameStrategy;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -71,9 +76,24 @@ export class CfrMinSolverService {
     public readonly jsonSchema: JSONSchemaService
   ) {}
 
-  private static generateSolution(strategies: GameStrategy, iterations: number): string {
-    // TODO: This
-    return '';
+  private static generateSolution(strategies: GameStrategy, ev: number, iterations: number): Solution {
+
+    for (const player of [1, 2]) {
+      for (const strategy of Object.values<PlayerStrategy>(strategies[player])) {
+        const size = Object.keys(strategy).length;
+        for (const action of Object.values<ActionStrategy>(strategy)) {
+          action.solution = ((action.sum / action.reachProbSum) * 100).toFixed(1) + '%';
+        }
+      }
+    }
+
+    console.log(JSON.stringify(strategies, null, 2));
+    console.log((ev / iterations));
+
+    return {
+      ev: (ev / iterations),
+      strategy: strategies
+    };
   }
 
   private static getState(game: ZeroSumSequentialGameTheorySpecification, stateName: string) {
@@ -140,7 +160,7 @@ export class CfrMinSolverService {
     return strategies;
   }
 
-  private static runCfrMin(game: ZeroSumSequentialGameTheorySpecification): string {
+  private static runCfrMin(game: ZeroSumSequentialGameTheorySpecification): Solution {
     const iterations = 20000;
     const strategies = this.initStrategies(game);
     let ev = 0;
@@ -148,10 +168,8 @@ export class CfrMinSolverService {
       ev += this.cfrMin(this.getState(game, game.start), game, strategies, [1, 1, 1]);
       this.updateStrategies(strategies);
     }
-    console.log(JSON.stringify(strategies, null, 2));
-    console.log((ev / iterations));
 
-    return CfrMinSolverService.generateSolution(strategies, iterations);
+    return this.generateSolution(strategies, ev, iterations);
   }
 
   // update strategies proportional to the positive regret
@@ -259,12 +277,11 @@ export class CfrMinSolverService {
     return Math.floor(Math.random() * max);
   }
 
-  public async solveGame(game: ZeroSumSequentialGameTheorySpecification): Promise<string> {
+  public async solveGame(game: ZeroSumSequentialGameTheorySpecification): Promise<Solution> {
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         const solution = CfrMinSolverService.runCfrMin(game);
-        console.log(solution);
         resolve(solution);
       }, 0);
     });

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import kuhn from '../../assets/games/examples/kuhn.json';
 import evenOrOdd from '../../assets/games/examples/even-or-odd.json';
 import {
-  CfrMinSolverService,
+  CfrMinSolverService, Solution,
   ZeroSumSequentialGameTheorySpecification
 } from '../services/cfr-min-solver.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import { UploadGameDialogComponent } from '../upload-game-dialog/upload-game-dia
 export class CfrSolverComponent implements OnInit {
 
   public game: ZeroSumSequentialGameTheorySpecification;
-  public result: string;
+  public result: Solution;
   public error: string;
   public loading = false;
 
@@ -32,6 +32,7 @@ export class CfrSolverComponent implements OnInit {
   public async setGame(game: object): Promise<void> {
     try {
       this.loading = true;
+      delete this.result;
       game = this.cfrService.validateGame(game);
       this.game = JSON.parse(JSON.stringify(game));
       if (this.game.error) {
@@ -41,9 +42,11 @@ export class CfrSolverComponent implements OnInit {
         delete this.error;
 
         this.result = await this.cfrService.solveGame(game);
+        // this.result = this.formatResult(resultObject);
       }
     } catch (e) {
       delete this.game;
+      delete this.result;
       this.error = e;
     } finally {
       this.loading = false;
@@ -64,6 +67,7 @@ export class CfrSolverComponent implements OnInit {
     this.loading = false;
     delete this.error;
     delete this.game;
+    delete this.result;
   }
 
   public async uploadGame(): Promise<void> {
@@ -74,6 +78,14 @@ export class CfrSolverComponent implements OnInit {
       const jsonResult = JSON.parse(result);
       this.setGame(jsonResult);
     }
+  }
+
+  public formatResult(obj: Solution) {
+    let str = '';
+    str += 'Player 1 expected value: ' + obj.ev + '\n';
+    str += 'Player 2 expected value: -' + obj.ev + '\n';
+
+    return str;
   }
 
 }

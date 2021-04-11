@@ -18,6 +18,22 @@
       <h2 class="game-name">{{game.name}}</h2>
       <div class="game-description"><b>Description: </b>{{game.description}}</div>
       <div *ngIf="loading"><mat-spinner mode="indeterminate" [diameter]="40"></mat-spinner></div>
+      <div *ngIf="result" class="game-solution">
+        <b>Solution: </b>
+        <div>Player 1 expected value: {{result.ev}}</div>
+        <div>Player 2 expected value: {{result.ev*-1}}</div>
+        <br>
+        <div *ngFor="let strategy of result.strategy | keyvalue">
+          Player {{strategy.key}} Strategy:
+          <div *ngFor="let stateStrategy of strategy.value | keyvalue">
+            &nbsp;&nbsp;&nbsp;{{stateStrategy.key === '' ? '(no knowledge)' : stateStrategy.key}}:
+            <div *ngFor="let actionStrategy of stateStrategy.value | keyvalue">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{actionStrategy.key}}: {{actionStrategy.value.solution}}
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
     </ng-container>
     <div class="buttons">
       <button *ngIf="game" mat-stroked-button color="warn" (click)="resetGame()">Clear Game Board</button>

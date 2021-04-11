@@ -37,23 +37,7 @@ export class RegretMatchingSolverService {
 
   constructor() { }
 
-  /**
-   * Play a game.
-   * @param game The game matrix
-   * @param players The players, with their moves
-   */
-  public solveGame(game: Game, players: Players): Solution {
-
-    this.makeStrategyPositive(game);
-    const iterations = 10000;
-    this.initStrategies(players);
-    for (let i = 0; i < iterations; i++) {
-      this.regretMatching(game, players);
-    }
-    return this.generateSolution(players, iterations);
-  }
-
-  private generateSolution(players: Players, iterations: number): Solution {
+  private static generateSolution(players: Players, iterations: number): Solution {
     const retVal: Solution = [];
     for (const player of players) {
       console.log(player.name + ':');
@@ -73,7 +57,7 @@ export class RegretMatchingSolverService {
     return retVal;
   }
 
-  private makeStrategyPositive(game: Game): void {
+  private static makeStrategyPositive(game: Game): void {
     let min = 0;
     for (const row of game) {
       for (const cell of row) {
@@ -96,7 +80,7 @@ export class RegretMatchingSolverService {
   }
 
 
-  private initStrategies(players: Players): void {
+  private static initStrategies(players: Players): void {
     for (const player of players) {
       // const numStrategies = player.strategies.length;
       for (const strategy of player.strategies) {
@@ -107,7 +91,7 @@ export class RegretMatchingSolverService {
   }
 
 
-  private regretMatching(game: Game, players: Players): void {
+  private static regretMatching(game: Game, players: Players): void {
 
     // loop over players
     for (const player of players) {
@@ -166,5 +150,21 @@ export class RegretMatchingSolverService {
     }
 
     // At the end of this algorithm, the regrets and sums have been updated for each player's strategies
+  }
+
+  /**
+   * Play a game.
+   * @param game The game matrix
+   * @param players The players, with their moves
+   */
+  public solveGame(game: Game, players: Players): Solution {
+
+    RegretMatchingSolverService.makeStrategyPositive(game);
+    const iterations = 10000;
+    RegretMatchingSolverService.initStrategies(players);
+    for (let i = 0; i < iterations; i++) {
+      RegretMatchingSolverService.regretMatching(game, players);
+    }
+    return RegretMatchingSolverService.generateSolution(players, iterations);
   }
 }
