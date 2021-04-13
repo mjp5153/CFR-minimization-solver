@@ -1,0 +1,355 @@
+{
+  "name": "Kuhn Poker",
+  "description": "A simple poker game where 2 players are each dealt one card from a deck of 3 cards, consisting of 1 Jack, 1 Queen, and 1 King.  Each player antes 1, and then gets a turn to check, bet 1, call, or fold.  If forced to reveal their cards, the player with the higher card wins.  More information is available here: https://en.wikipedia.org/wiki/Kuhn_poker",
+  "start": "deal cards",
+  "states": [
+    {
+      "name": "deal cards",
+      "player": "chance",
+      "actions": [
+        {"J/K": "J/K"},
+        {"J/Q": "J/Q"},
+        {"Q/K": "Q/K"},
+        {"Q/J": "Q/J"},
+        {"K/Q": "K/Q"},
+        {"K/J": "K/J"}
+      ]
+    },
+    {
+      "name": "J/K",
+      "player": 1,
+      "knowledge": "J",
+      "actions": [
+        {"check": "J/K check"},
+        {"bet": "J/K bet"}
+      ]
+    },
+    {
+      "name": "J/K check",
+      "player": 2,
+      "knowledge": "K check",
+      "actions": [
+        {"check": "J/K check check"},
+        {"bet": "J/K check bet"}
+      ]
+    },
+    {
+      "name": "J/K check check",
+      "result": -1
+    },
+    {
+      "name": "J/K check bet",
+      "player": 1,
+      "knowledge": "J check bet",
+      "actions": [
+        {"fold": "J/K check bet fold"},
+        {"call": "J/K check bet call"}
+      ]
+    },
+    {
+      "name": "J/K check bet fold",
+      "result": -1
+    },
+    {
+      "name": "J/K check bet call",
+      "result": -2
+    },
+    {
+      "name": "J/K bet",
+      "player": 2,
+      "knowledge": "K bet",
+      "actions": [
+        {"fold": "J/K bet fold"},
+        {"call": "J/K bet call"}
+      ]
+    },
+    {
+      "name": "J/K bet fold",
+      "result": 1
+    },
+    {
+      "name": "J/K bet call",
+      "result": -2
+    },
+    {
+      "name": "J/Q",
+      "player": 1,
+      "knowledge": "J",
+      "actions": [
+        {"check": "J/Q check"},
+        {"bet": "J/Q bet"}
+      ]
+    },
+    {
+      "name": "J/Q check",
+      "player": 2,
+      "knowledge": "Q check",
+      "actions": [
+        {"check": "J/Q check check"},
+        {"bet": "J/Q check bet"}
+      ]
+    },
+    {
+      "name": "J/Q check check",
+      "result": -1
+    },
+    {
+      "name": "J/Q check bet",
+      "player": 1,
+      "knowledge": "J check bet",
+      "actions": [
+        {"fold": "J/Q check bet fold"},
+        {"call": "J/Q check bet call"}
+      ]
+    },
+    {
+      "name": "J/Q check bet fold",
+      "result": -1
+    },
+    {
+      "name": "J/Q check bet call",
+      "result": -2
+    },
+    {
+      "name": "J/Q bet",
+      "player": 2,
+      "knowledge": "Q bet",
+      "actions": [
+        {"fold": "J/Q bet fold"},
+        {"call": "J/Q bet call"}
+      ]
+    },
+    {
+      "name": "J/Q bet fold",
+      "result": 1
+    },
+    {
+      "name": "J/Q bet call",
+      "result": -2
+    },
+    {
+      "name": "Q/K",
+      "player": 1,
+      "knowledge": "Q",
+      "actions": [
+        {"check": "Q/K check"},
+        {"bet": "Q/K bet"}
+      ]
+    },
+    {
+      "name": "Q/K check",
+      "player": 2,
+      "knowledge": "K check",
+      "actions": [
+        {"check": "Q/K check check"},
+        {"bet": "Q/K check bet"}
+      ]
+    },
+    {
+      "name": "Q/K check check",
+      "result": -1
+    },
+    {
+      "name": "Q/K check bet",
+      "player": 1,
+      "knowledge": "Q check bet",
+      "actions": [
+        {"fold": "Q/K check bet fold"},
+        {"call": "Q/K check bet call"}
+      ]
+    },
+    {
+      "name": "Q/K check bet fold",
+      "result": -1
+    },
+    {
+      "name": "Q/K check bet call",
+      "result": -2
+    },
+    {
+      "name": "Q/K bet",
+      "player": 2,
+      "knowledge": "K bet",
+      "actions": [
+        {"fold": "Q/K bet fold"},
+        {"call": "Q/K bet call"}
+      ]
+    },
+    {
+      "name": "Q/K bet fold",
+      "result": 1
+    },
+    {
+      "name": "Q/K bet call",
+      "result": -2
+    },
+    {
+      "name": "Q/J",
+      "player": 1,
+      "knowledge": "Q",
+      "actions": [
+        {"check": "Q/J check"},
+        {"bet": "Q/J bet"}
+      ]
+    },
+    {
+      "name": "Q/J check",
+      "player": 2,
+      "knowledge": "J check",
+      "actions": [
+        {"check": "Q/J check check"},
+        {"bet": "Q/J check bet"}
+      ]
+    },
+    {
+      "name": "Q/J check check",
+      "result": 1
+    },
+    {
+      "name": "Q/J check bet",
+      "player": 1,
+      "knowledge": "Q check bet",
+      "actions": [
+        {"fold": "Q/J check bet fold"},
+        {"call": "Q/J check bet call"}
+      ]
+    },
+    {
+      "name": "Q/J check bet fold",
+      "result": -1
+    },
+    {
+      "name": "Q/J check bet call",
+      "result": 2
+    },
+    {
+      "name": "Q/J bet",
+      "player": 2,
+      "knowledge": "J bet",
+      "actions": [
+        {"fold": "Q/J bet fold"},
+        {"call": "Q/J bet call"}
+      ]
+    },
+    {
+      "name": "Q/J bet fold",
+      "result": 1
+    },
+    {
+      "name": "Q/J bet call",
+      "result": 2
+    },
+    {
+      "name": "K/Q",
+      "player": 1,
+      "knowledge": "K",
+      "actions": [
+        {"check": "K/Q check"},
+        {"bet": "K/Q bet"}
+      ]
+    },
+    {
+      "name": "K/Q check",
+      "player": 2,
+      "knowledge": "Q check",
+      "actions": [
+        {"check": "K/Q check check"},
+        {"bet": "K/Q check bet"}
+      ]
+    },
+    {
+      "name": "K/Q check check",
+      "result": 1
+    },
+    {
+      "name": "K/Q check bet",
+      "player": 1,
+      "knowledge": "K check bet",
+      "actions": [
+        {"fold": "K/Q check bet fold"},
+        {"call": "K/Q check bet call"}
+      ]
+    },
+    {
+      "name": "K/Q check bet fold",
+      "result": -1
+    },
+    {
+      "name": "K/Q check bet call",
+      "result": 2
+    },
+    {
+      "name": "K/Q bet",
+      "player": 2,
+      "knowledge": "Q bet",
+      "actions": [
+        {"fold": "K/Q bet fold"},
+        {"call": "K/Q bet call"}
+      ]
+    },
+    {
+      "name": "K/Q bet fold",
+      "result": 1
+    },
+    {
+      "name": "K/Q bet call",
+      "result": 2
+    },
+    {
+      "name": "K/J",
+      "player": 1,
+      "knowledge": "K",
+      "actions": [
+        {"check": "K/J check"},
+        {"bet": "K/J bet"}
+      ]
+    },
+    {
+      "name": "K/J check",
+      "player": 2,
+      "knowledge": "J check",
+      "actions": [
+        {"check": "K/J check check"},
+        {"bet": "K/J check bet"}
+      ]
+    },
+    {
+      "name": "K/J check check",
+      "result": 1
+    },
+    {
+      "name": "K/J check bet",
+      "player": 1,
+      "knowledge": "K check bet",
+      "actions": [
+        {"fold": "K/J check bet fold"},
+        {"call": "K/J check bet call"}
+      ]
+    },
+    {
+      "name": "K/J check bet fold",
+      "result": -1
+    },
+    {
+      "name": "K/J check bet call",
+      "result": 2
+    },
+    {
+      "name": "K/J bet",
+      "player": 2,
+      "knowledge": "J bet",
+      "actions": [
+        {"fold": "K/J bet fold"},
+        {"call": "K/J bet call"}
+      ]
+    },
+    {
+      "name": "K/J bet fold",
+      "result": 1
+    },
+    {
+      "name": "K/J bet call",
+      "result": 2
+    }
+  ]
+}

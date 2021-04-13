@@ -1,0 +1,50 @@
+{
+  "name": "Even or odd",
+  "description": "A simple game, where player 1 puts up either 1 or 2 fingers behind his back, and player two guesses even or odd.  If player 2 guesses correct, player 2 wins.  If player 2 guesses incorrectly, player 1 wins.",
+  "start": "pick",
+  "states": [
+    {
+      "name": "pick",
+      "player": 1,
+      "knowledge": "",
+      "actions": [
+        {"1": "1"},
+        {"2": "2"}
+      ]
+    },
+    {
+      "name": "1",
+      "player": 2,
+      "knowledge": "",
+      "actions": [
+        {"even": "1 even"},
+        {"odd": "1 odd"}
+      ]
+    },
+    {
+      "name": "1 even",
+      "result": 1
+    },
+    {
+      "name": "1 odd",
+      "result": -1
+    },
+    {
+      "name": "2",
+      "player": 2,
+      "knowledge": "",
+      "actions": [
+        {"even": "2 even"},
+        {"odd": "2 odd"}
+      ]
+    },
+    {
+      "name": "2 even",
+      "result": -1
+    },
+    {
+      "name": "2 odd",
+      "result": 1
+    }
+  ]
+}

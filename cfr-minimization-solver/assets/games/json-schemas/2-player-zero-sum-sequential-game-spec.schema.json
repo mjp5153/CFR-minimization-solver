@@ -1,0 +1,65 @@
+{
+  "definitions": {
+    "states": {
+      "type": "array",
+      "items": {"$ref": "#/definitions/gameState"}
+    },
+    "gameState": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "player": { "enum": [ "chance", 1, 2 ] },
+        "knowledge": { "type": "string" },
+        "actions": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/action" }
+        },
+        "result": { "type": "integer" }
+      },
+      "dependencies": {
+        "actions": ["player"],
+        "player": ["actions"]
+      },
+      "oneOf": [
+        { "required": ["actions"] },
+        { "required": ["result"] }
+      ],
+      "if": {
+        "properties": {
+          "player": {
+            "enum": [
+              1,2
+            ]
+          }
+        },
+        "required": [
+          "player"
+        ]
+      },
+      "then": {
+        "required": [
+          "knowledge"
+        ]
+      },
+      "else": {
+        "not" : { "required" : ["knowledge"] }
+      },
+      "required": ["name"],
+      "additionalProperties": false
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "title": "2-player zero-sum sequential game theory specification",
+  "description": "A JSON format for defining 2-player zero-sum sequential game theory games.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": { "type": "string" },
+    "description": { "type":  "string" },
+    "start": { "type":  "string" },
+    "states": {"$ref": "#/definitions/states"}
+  }
+}
