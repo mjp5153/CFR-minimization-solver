@@ -161,7 +161,7 @@ export class CfrMinSolverService {
   }
 
   private static runCfrMin(game: ZeroSumSequentialGameTheorySpecification): Solution {
-    const iterations = 20000;
+    const iterations = 30000;
     const strategies = this.initStrategies(game);
     let ev = 0;
     for (let i = 0; i < iterations; i++) {
@@ -271,10 +271,6 @@ export class CfrMinSolverService {
         error: result.errorsText
       };
     }
-  }
-
-  private getRandomInt(max: number): number {
-    return Math.floor(Math.random() * max);
   }
 
   public async solveGame(game: ZeroSumSequentialGameTheorySpecification): Promise<Solution> {

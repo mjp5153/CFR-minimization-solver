@@ -42,7 +42,6 @@ export class CfrSolverComponent implements OnInit {
         delete this.error;
 
         this.result = await this.cfrService.solveGame(game);
-        // this.result = this.formatResult(resultObject);
       }
     } catch (e) {
       delete this.game;
@@ -78,14 +77,6 @@ export class CfrSolverComponent implements OnInit {
       const jsonResult = JSON.parse(result);
       this.setGame(jsonResult);
     }
-  }
-
-  public formatResult(obj: Solution) {
-    let str = '';
-    str += 'Player 1 expected value: ' + obj.ev + '\n';
-    str += 'Player 2 expected value: -' + obj.ev + '\n';
-
-    return str;
   }
 
 }

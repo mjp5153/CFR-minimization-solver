@@ -17,7 +17,10 @@
     <ng-container *ngIf="game">
       <h2 class="game-name">{{game.name}}</h2>
       <div class="game-description"><b>Description: </b>{{game.description}}</div>
-      <div *ngIf="loading"><mat-spinner mode="indeterminate" [diameter]="40"></mat-spinner></div>
+      <div *ngIf="loading">
+<!--        <mat-spinner mode="indeterminate" [diameter]="40"></mat-spinner>-->
+        Calculating...
+      </div>
       <div *ngIf="result" class="game-solution">
         <b>Solution: </b>
         <div>Player 1 expected value: {{result.ev}}</div>
@@ -35,12 +38,12 @@
         </div>
       </div>
     </ng-container>
+    <div class="error" *ngIf="error">Error loading game: {{error}}</div>
     <div class="buttons">
       <button *ngIf="game" mat-stroked-button color="warn" (click)="resetGame()">Clear Game Board</button>
       <button mat-stroked-button color="primary" (click)="uploadGame()">Upload Game</button>
     </div>
   </div>
-  <div class="error" *ngIf="error">Error loading game: {{error}}</div>
 
   <p>Play pre-defined 2-person zero-sum sequential game theory games.</p>
   <div class="buttons">

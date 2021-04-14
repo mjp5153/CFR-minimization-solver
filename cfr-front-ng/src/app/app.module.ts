@@ -31,8 +31,8 @@ import { UploadGameDialogComponent } from './upload-game-dialog/upload-game-dial
     UploadGameDialogComponent
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
+    BrowserModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatFormFieldModule,
