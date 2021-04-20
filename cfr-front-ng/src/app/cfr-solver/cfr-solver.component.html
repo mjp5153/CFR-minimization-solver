@@ -23,8 +23,8 @@
       </div>
       <div *ngIf="result" class="game-solution">
         <b>Solution: </b>
-        <div>Player 1 expected value: {{result.ev}}</div>
-        <div>Player 2 expected value: {{result.ev*-1}}</div>
+        <div>Player 1 expected value: {{result.ev.toFixed(3)}}</div>
+        <div>Player 2 expected value: {{(result.ev*-1).toFixed(3)}}</div>
         <br>
         <div *ngFor="let strategy of result.strategy | keyvalue">
           Player {{strategy.key}} Strategy:

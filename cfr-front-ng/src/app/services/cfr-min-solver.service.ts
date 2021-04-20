@@ -63,7 +63,7 @@ export interface GameStrategy {
 }
 
 export interface Solution {
-  ev: string;
+  ev: number;
   strategy: GameStrategy;
 }
 
@@ -91,7 +91,7 @@ export class CfrMinSolverService {
     console.log((ev / iterations));
 
     return {
-      ev: (ev / iterations).toFixed(3),
+      ev: (ev / iterations),
       strategy: strategies
     };
   }
