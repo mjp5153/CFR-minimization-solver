@@ -63,7 +63,7 @@ export interface GameStrategy {
 }
 
 export interface Solution {
-  ev: number;
+  ev: string;
   strategy: GameStrategy;
 }
 
@@ -80,7 +80,7 @@ export class CfrMinSolverService {
 
     for (const player of [1, 2]) {
       for (const strategy of Object.values<PlayerStrategy>(strategies[player])) {
-        const size = Object.keys(strategy).length;
+        // const size = Object.keys(strategy).length;
         for (const action of Object.values<ActionStrategy>(strategy)) {
           action.solution = ((action.sum / action.reachProbSum) * 100).toFixed(1) + '%';
         }
@@ -91,7 +91,7 @@ export class CfrMinSolverService {
     console.log((ev / iterations));
 
     return {
-      ev: (ev / iterations),
+      ev: (ev / iterations).toFixed(3),
       strategy: strategies
     };
   }
@@ -203,7 +203,8 @@ export class CfrMinSolverService {
   }
 
   // current probs is player 1 reach prob, player 2 reach prob, chance reach prob
-  private static cfrMin(state: GameState, game: ZeroSumSequentialGameTheorySpecification, strategies: GameStrategy, currentProbs: [number, number, number]): number {
+  private static cfrMin(state: GameState, game: ZeroSumSequentialGameTheorySpecification, strategies: GameStrategy,
+                        currentProbs: [number, number, number]): number {
     // if terminal state
     if ('result' in state) {
       return state.result;
@@ -275,7 +276,7 @@ export class CfrMinSolverService {
 
   public async solveGame(game: ZeroSumSequentialGameTheorySpecification): Promise<Solution> {
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         const solution = CfrMinSolverService.runCfrMin(game);
         resolve(solution);

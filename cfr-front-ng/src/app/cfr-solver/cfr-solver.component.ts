@@ -16,6 +16,7 @@ import { UploadGameDialogComponent } from '../upload-game-dialog/upload-game-dia
 })
 export class CfrSolverComponent implements OnInit {
 
+  public year;
   public game: ZeroSumSequentialGameTheorySpecification;
   public result: Solution;
   public error: string;
@@ -27,6 +28,7 @@ export class CfrSolverComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.year = new Date().getFullYear();
   }
 
   public async setGame(game: object): Promise<void> {

@@ -4,7 +4,7 @@
     Game Theory Solver
   </h2>
   <h1>Counterfactual Regret Minimization Solver</h1>
-  <p>Solve arbitrary 2-person zero-sum sequential game theory games!</p>
+  <p>Solve arbitrary 2-person zero-sum sequential game theory games using Counterfactual Regret Minimization!</p>
 
   <div class="game">
     <div class="solver-description" *ngIf="!game">
@@ -50,4 +50,11 @@
     <button mat-stroked-button color="primary" (click)="loadEvenOrOdd()">Even or Odd</button>
     <button mat-stroked-button color="primary" (click)="loadKuhn()">Kuhn Poker</button>
   </div>
+
+  <p></p>
+  <p>Learn more about CFR
+    <a href="http://martin.zinkevich.org/publications/regretpoker.pdf" target="_blank">here.</a>
+  </p>
+
+  <div class="info-text">Copyright 2021 - {{year}} Mike Peters.  Source code available under Apache License, Version 2.0 at <a target="_blank" href="https://github.com/mjp5153/CFR-minimization-solver">github</a>.</div>
 </div>
